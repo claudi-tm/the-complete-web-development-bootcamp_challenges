@@ -4,6 +4,14 @@ let drum_sounds = initializeAudiosFiles(drum_buttons.length);
 playSoundByClick(drum_buttons);
 playSoundByPressingKey(drum_buttons, drum_sounds);
 
+function buttonAnimation(currentKey) {
+	var active_button = document.querySelector("." + currentKey);
+	active_button.classList.add("pressed");
+	setTimeout(() => {
+		active_button.classList.remove("pressed");
+	}, 100);
+}
+
 function getButtons() {
 	return document.querySelectorAll("button");
 }
@@ -12,12 +20,17 @@ function playSoundByClick(drum_buttons) {
 	drum_buttons.forEach((button, index) => {
 		button.addEventListener("click", function () {
 			drum_sounds[index].play();
+			button.classList.add("pressed");
+			setTimeout(() => {
+				button.classList.remove("pressed");
+			}, 100);
 		});
 	});
 }
 
 function playSoundByPressingKey(drum_buttons, drum_sounds) {
 	document.addEventListener("keydown", (keyboard) => {
+		buttonAnimation(keyboard.key);
 		drum_buttons.forEach((button, index) => {
 			if (keyboard.key === button.textContent) drum_sounds[index].play();
 		});
